@@ -1,0 +1,44 @@
+{
+  "name": "Générateur de Planification de Jardin Méditerranéen",
+  "description": "Créez le jardin de vos rêves adapté au climat ensoleillé du sud de la France. Notre outil interactif vous guide dans la sélection de plantes résistantes, d'agencements harmonieux et de textures chaudes, pour un espace extérieur qui respire la douceur de vivre méditerranéenne.",
+  "theme": "generator",
+  "design_theme": "copper-grid",
+  "structure_preset": "split-command",
+  "render_direction": "studio-split",
+  "page_blueprint": "briefing-board",
+  "language": "fr",
+  "country": "FR",
+  "url": null,
+  "expected_url": "https://generateur-de-planification-de-jardin-mediterraneen-1.onrender.com",
+  "created": "2026-05-18T20:43:43.282387+00:00",
+  "owner_user_id": "user-1774822953462",
+  "owner_username": "admin",
+  "owner_display_name": "Administrator",
+  "status": "generated",
+  "run_id": "run-1779136989655",
+  "external_site_request_id": null,
+  "external_client_ref": null,
+  "external_source_label": null,
+  "source_type": "generated",
+  "publish_target": "render",
+  "mode": "production",
+  "github": {
+    "status": "pending"
+  },
+  "deployment": {
+    "status": "pending"
+  },
+  "qa": {
+    "status": "pending"
+  },
+  "features": [
+    "Hero pattern: split",
+    "Proof module: metrics",
+    "Design theme: Copper Grid",
+    "Render direction: Studio Split",
+    "Page blueprint: Briefing Board",
+    "Runtime mode: palette_generator",
+    "Generation mode: direct_html",
+    "Artifact rendered, awaiting QA and deployment"
+  ]
+}
