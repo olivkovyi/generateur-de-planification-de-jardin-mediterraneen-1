@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Planification de Jardin Méditerranéen | Imaginez Votre Espace</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --color-primary: #b46a3b; /* Copper-like */
+            --color-secondary: #e0d0c0; /* Warm beige */
+            --color-tertiary: #5a3c2b; /* Darker copper */
+            --color-background: #f7f2ed;
+            --color-text: #3a2b20;
+            --color-light-text: #6b5c50;
+            --color-border: rgba(180, 106, 59, 0.4);
+            --color-glass-bg: rgba(255, 255, 255, 0.6);
+            --color-glass-border: rgba(180, 106, 59, 0.2);
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-glass: 0 6px 20px rgba(0, 0, 0, 0.1), inset 0 0 0 1px var(--color-glass-border);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            width: 90%;
+            max-width: 1200px;
+            margin-bottom: 60px;
+        }
+
+        .panel {
+            background-color: var(--color-glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-glass);
+            border: 1px solid var(--color-glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-primary);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 10px;
+        }
+
+        .panel p {
+            font-size: 1em;
+            color: var(--color-light-text);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-tertiary);
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(180, 106, 59, 0.2);
+            outline: none;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-subtle);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--color-tertiary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        #tool-result {
+            margin-top: 30px;
+            background-color: var(--color-secondary);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-subtle);
+            display: none; /* Hidden by default */
+        }
+
+        #tool-result h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-tertiary);
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-section {
+            margin-bottom: 25px;
+        }
+
+        .result-section h4 {
+            font-size: 1.2em;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--color-border);
+            padding-bottom: 5px;
+        }
+
+        .result-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .result-section li {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(180, 106, 59, 0.1);
+            color: var(--color-text);
+            font-size: 0.95em;
+        }
+
+        .seo-section {
+            background-color: var(--color-text);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            width: 100%;
+            margin-top: 60px;
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .seo-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            color: var(--color-secondary);
+        }
+
+        .seo-section p {
+            max-width: 900px;
+            margin: 0 auto 20px auto;
+            font-size: 0.95em;
+            line-height: 1.7;
+            color: var(--color-secondary);
+        }
+
+        .seo-section a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .seo-section a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .panel.full-width {
+                grid-column: span 2;
+            }
+
+            button {
+                width: auto;
+                min-width: 200px;
+            }
+            .form-group.action {
+                text-align: right;
+            }
+        }
+    </style>
+    <meta name="description" content="Créez le jardin de vos rêves adapté au climat ensoleillé du sud de la France. Notre outil interactif vous guide dans la sélection de plantes résistantes, d&#x27;agencements harmonieux et de textures chaudes, pour un espace extérieur qui respire la douceur de vivre méditerranéenne.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://generateur-de-planification-de-jardin-mediterraneen-1.onrender.com">
+    <meta property="og:title" content="Générateur de Planification de Jardin Méditerranéen">
+    <meta property="og:description" content="Créez le jardin de vos rêves adapté au climat ensoleillé du sud de la France. Notre outil interactif vous guide dans la sélection de plantes résistantes, d&#x27;agencements harmonieux et de textures chaudes, pour un espace extérieur qui respire la douceur de vivre méditerranéenne.">
+    <meta property="og:url" content="https://generateur-de-planification-de-jardin-mediterraneen-1.onrender.com">
+    <meta property="og:type" content="website">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Générateur de Planification de Jardin Méditerranéen", "description": "Créez le jardin de vos rêves adapté au climat ensoleillé du sud de la France. Notre outil interactif vous guide dans la sélection de plantes résistantes, d'agencements harmonieux et de textures chaudes, pour un espace extérieur qui respire la douceur de vivre méditerranéenne.", "url": "https://generateur-de-planification-de-jardin-mediterraneen-1.onrender.com", "applicationCategory": "UtilityApplication", "operatingSystem": "Web Browser"}</script>
+</head>
+<body data-site-slug="generateur-de-planification-de-jardin-mediterraneen-1" data-runtime-mode="palette_generator">
+    <header>
+        <h1>Votre Oasis Méditerranéenne, Conçue sur Mesure</h1>
+        <p>Créez le jardin de vos rêves adapté au climat ensoleillé du sud de la France. Notre outil interactif vous guide dans la sélection de plantes résistantes, d'agencements harmonieux et de textures chaudes, pour un espace extérieur qui respire la douceur de vivre méditerranéenne.</p>
+    </header>
+
+    <main>
+        <section class="panel">
+            <h2>Imaginez Votre Espace</h2>
+            <p>Décrivez-nous votre futur jardin. Chaque détail compte pour sculpter une proposition qui vous ressemble, en harmonie avec le soleil généreux et les essences du Midi.</p>
+            <form id="tool-form">
+                <div class="form-group">
+                    <label for="location">Votre département (ex: Bouches-du-Rhône, Var) :</label>
+                    <input type="text" id="location" placeholder="Ex: Hérault" required>
+                </div>
+                <div class="form-group">
+                    <label for="surface">Surface approximative du jardin (en m²) :</label>
+                    <input type="number" id="surface" min="10" max="5000" value="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="exposition">Exposition principale du jardin :</label>
+                    <select id="exposition" required>
+                        <option value="pleinsud">Plein Sud (très ensoleillé)</option>
+                        <option value="estouest">Est/Ouest (soleil mi-journée)</option>
+                        <option value="nord">Nord (ombre ou mi-ombre)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="soil">Type de sol (observé ou supposé) :</label>
+                    <select id="soil" required>
+                        <option value="calcaire">Calcaire (drainant, sec)</option>
+                        <option value="argileux">Argileux (retient l'eau)</option>
+                        <option value="sableux">Sableux (très drainant)</option>
+                        <option value="normal">Normal/Standard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="preferences">Vos préférences de style ou ambiances (ex: garrigue, provence, contemporain...) :</label>
+                    <textarea id="preferences" placeholder="Ex: J'aime les couleurs chaudes, les odeurs d'aromates, un coin ombragé pour l'été."></textarea>
+                </div>
+                <div class="form-group action">
+                    <button type="submit" id="tool-submit" data-affiliate-slot="generate_plan">Générer mon plan de jardin</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel full-width">
+            <h2>Votre Plan Personnalisé</h2>
+            <p>Découvrez une proposition unique, inspirée par la richesse botanique de la Méditerranée et adaptée à vos envies. Ce plan est une suggestion pour vous aider à démarrer votre projet.</p>
+            <div id="tool-result">
+                <h3 id="result-headline">Votre Ébauche de Jardin Méditerranéen</h3>
+
+                <div class="result-section">
+                    <h4>Sélection de Plantes Indigènes & Résistantes</h4>
+                    <ul id="result-plants"></ul>
+                </div>
+
+                <div class="result-section">
+                    <h4>Suggestions d'Agencement & Textures</h4>
+                    <ul id="result-layout"></ul>
+                </div>
+
+                <div class="result-section">
+                    <h4>Conseils Climat & Entretien</h4>
+                    <ul id="result-tips"></ul>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <section class="seo-section">
+        <h2>Créer un Jardin Méditerranéen en France : Guide Complet</h2>
+        <p>Envie d'aménager un <a href="#" aria-label="jardin méditerranéen sec">jardin méditerranéen sec</a>, résistant à la <a href="#" aria-label="sécheresse plantes sud france">sécheresse</a>, en Provence, en Occitanie ou sur la Côte d'Azur ? Notre générateur vous aide à concevoir un <a href="#" aria-label="plan jardin méditerranéen">plan de jardin méditerranéen</a> personnalisé. Découvrez les meilleures <a href="#" aria-label="plantes méditerranéennes résistantes chaleur">plantes méditerranéennes résistantes à la chaleur</a> et au manque d'eau, idéales pour un <a href="#" aria-label="aménagement paysager climat méditerranéen">aménagement paysager en climat méditerranéen</a>. Que vous cherchiez des idées pour un petit espace ou un grand domaine, notre outil propose des solutions adaptées à vos préférences de style, que ce soit une ambiance garrigue, un jardin provençal ou un design contemporain. Évitez le stress du choix des végétaux grâce à nos <a href="#" aria-label="conseils jardinage méditerranéen">conseils jardinage méditerranéen</a> et créez un oasis durable et esthétique. Simplifiez la <a href="#" aria-label="conception jardin méditerranéen">conception de votre jardin méditerranéen</a> dès aujourd'hui !</p>
+    </section>
+
+    <script>
+        document.getElementById('tool-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const location = document.getElementById('location').value.toLowerCase();
+            const surface = parseInt(document.getElementById('surface').value);
+            const exposition = document.getElementById('exposition').value;
+            const soil = document.getElementById('soil').value;
+            const preferences = document.getElementById('preferences').value.toLowerCase();
+
+            let plants = [];
+            let layout = [];
+            let tips = [];
+
+            // Plant selection logic
+            if (exposition === 'pleinsud') {
+                plants.push("Lavande (Lavandula angustifolia) - pour son parfum et sa résistance.");
+                plants.push("Romarin (Rosmarinus officinalis) - arbuste aromatique et structurant.");
+                plants.push("Cistes (Cistus) - floraison généreuse, tolère les sols pauvres.");
+                plants.push("Olivier (Olea europaea) - l'emblème de la Méditerranée.");
+                plants.push("Cyprès de Provence (Cupressus sempervirens) - pour une structure verticale.");
+            } else if (exposition === 'estouest') {
+                plants.push("Laurier-rose (Nerium oleander) - floraison éclatante.");
+                plants.push("Arbousier (Arbutus unedo) - fruits décoratifs et résistance.");
+                plants.push("Phlomis (Phlomis fruticosa) - feuillage gris, fleurs jaunes originales.");
+                plants.push("Myrte (Myrtus communis) - feuillage persistant, fleurs délicates.");
+            } else { // Nord ou mi-ombre
+                plants.push("Chèvrefeuille (Lonicera) - grimpante parfumée pour l'ombre.");
+                plants.push("Fougères méditerranéennes (ex: Adiantum capillus-veneris) - pour les zones humides et ombragées.");
+                plants.push("Pittosporum tobira - arbuste résistant à l'ombre et aux embruns.");
+            }
+
+            if (soil === 'calcaire' || soil === 'sableux') {
+                plants.push("Thym (Thymus vulgaris) - couvre-sol aromatique.");
+                plants.push("Sedum (Orpin) - succulente résistante à la sécheresse.");
+                plants.push("Gaura (Gaura lindheimeri) - floraison légère et aérienne.");
+            }
+            if (soil === 'argileux') {
+                plants.push("Grenadier (Punica granatum) - tolère les sols plus lourds.");
+            }
+
+            // Additional plants based on preferences
+            if (preferences.includes('aromates') || preferences.includes('parfum')) {
+                plants.push("Sauge (Salvia officinalis) - feuillage décoratif et odeur.");
+                plants.push("Fenouil (Foeniculum vulgare) - aspect sauvage et aérien.");
+            }
+            if (preferences.includes('couleurs chaudes')) {
+                plants.push("Géranium vivace (Geranium sanguineum) - floraison rose/rouge.");
+                plants.push("Santoline (Santolina chamaecyparissus) - feuillage gris, fleurs jaunes.");
+            }
+            if (preferences.includes('ombre')) {
+                plants.push("Figuier (Ficus carica) - pour un coin gourmand et ombragé.");
+            }
+            if (preferences.includes('cactus') || preferences.includes('succulentes')) {
+                plants.push("Agave (Agave americana) - pour un aspect graphique et moderne.");
+                plants.push("Opuntia (Figuier de Barbarie) - attention aux épines !");
+            }
+            if (preferences.includes('provençal')) {
+                plants.push("Buis (Buxus sempervirens) - pour les bordures et sculptures.");
+                plants.push("Vigne (Vitis vinifera) - pour une pergola ombragée.");
+            }
+
+
+            // Layout and textures suggestions
+            if (surface < 50) {
+                layout.push("Privilégiez des poteries en terre cuite de différentes tailles pour créer du volume.");
+                layout.push("Utilisez un mur végétal avec des aromates pour maximiser l'espace.");
+            } else if (surface < 200) {
+                layout.push("Créez des zones distinctes : un coin repas ombragé, un espace floral.");
+                layout.push("Intégrez un chemin en gravier clair pour délimiter les parterres.");
+            } else {
+                layout.push("Aménagez une large allée centrale en pierre locale.");
+                layout.push("Prévoyez des massifs de grande envergure avec des arbres et arbustes structurants.");
+                layout.push("Pensez à une petite fontaine ou un bassin pour le murmure de l'eau.");
+            }
+
+            layout.push("Utilisez des galets ou graviers clairs comme paillage pour retenir l'humidité et apporter de la luminosité.");
+            layout.push("Intégrez des roches et pierres naturelles pour un aspect garrigue.");
+            layout.push("Pensez aux pergolas ou tonnelles en bois ou fer forgé, habillées de plantes grimpantes.");
+            layout.push("Choisissez des mobiliers de jardin en fer forgé, bois naturel ou résine tressée aux teintes chaudes.");
+
+
+            // Climate and maintenance tips
+            tips.push("Arrosez abondamment mais rarement, de préférence le soir ou tôt le matin.");
+            tips.push("Paillez généreusement les pieds des plantes pour conserver l'humidité du sol.");
+            tips.push("Privilégiez les plantes adaptées au climat local pour minimiser l'entretien.");
+            tips.push("Installez un système d'arrosage goutte à goutte pour une gestion efficace de l'eau.");
+            tips.push("Taillez les arbustes après la floraison pour favoriser la densification.");
+            tips.push("Envisagez la récupération d'eau de pluie pour l'arrosage.");
+
+            // Display results
+            document.getElementById('result-plants').innerHTML = plants.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('result-layout').innerHTML = layout.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('result-tips').innerHTML = tips.map(item => `<li>${item}</li>`).join('');
+
+            document.getElementById('tool-result').style.display = 'block';
+            document.getElementById('tool-result').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+<div id="qa-smoke-result" hidden></div>
+<script id="farmbuilder-affiliate-helper">
+(function () {
+  window.__UTILITY_AFFILIATE_MAP = window.__UTILITY_AFFILIATE_MAP || {};
+  document.addEventListener("click", function (event) {
+    const target = event.target.closest("[data-affiliate-slot]");
+    if (!target) return;
+    const slot = target.getAttribute("data-affiliate-slot");
+    const href = window.__UTILITY_AFFILIATE_MAP[slot];
+    if (!href) return;
+    if (target.tagName && target.tagName.toLowerCase() === "a") {
+      target.setAttribute("href", href);
+      target.removeAttribute("rel");
+      return;
+    }
+    event.preventDefault();
+    window.open(href, "_blank");
+  }, true);
+})();
+</script>
+<script id="farmbuilder-functional-qa">
+(function () {
+  function marker() {
+    let node = document.getElementById("qa-smoke-result");
+    if (node) return node;
+    node = document.createElement("div");
+    node.id = "qa-smoke-result";
+    node.hidden = true;
+    document.body.appendChild(node);
+    return node;
+  }
+
+  let qaFinished = false;
+  let qaWatchdog = null;
+
+  function normalize(text) {
+    return String(text || "").replace(/\s+/g, " ").trim();
+  }
+
+  function findForm() {
+    return document.getElementById("tool-form") || document.querySelector("form");
+  }
+
+  function findResult() {
+    return (
+      document.getElementById("tool-result") ||
+      document.querySelector("[data-result]") ||
+      document.querySelector(".tool-result, .result-card, .result, .results, .output, .preview, .diagnostic, .analysis")
+    );
+  }
+
+  function primaryAction(form) {
+    if (!form) return null;
+    return (
+      document.getElementById("tool-submit") ||
+      form.querySelector("#tool-submit") ||
+      form.querySelector("[data-primary-action]") ||
+      form.querySelector("button[type=submit]") ||
+      form.querySelector("button") ||
+      form.querySelector("input[type=submit]")
+    );
+  }
+
+  function resultSignature(node) {
+    if (!node) return "";
+    const text = normalize(node.textContent);
+    const html = normalize(node.innerHTML).slice(0, 600);
+    return `${text}||${html}`;
+  }
+
+  function resultHeadline(node) {
+    if (!node) return "";
+    const heading = node.querySelector("h1, h2, h3, strong, b");
+    return normalize(heading ? heading.textContent : "");
+  }
+
+  function sampleText(field) {
+    const key = `${field.id || ""} ${field.name || ""} ${field.placeholder || ""}`.toLowerCase();
+    if (/email/.test(key)) return "bonjour@example.com";
+    if (/url|site|website|lien/.test(key)) return "https://example.com/offre-solaire";
+    if (/phone|tel|mobile/.test(key)) return "0612345678";
+    if (/ville|city|localisation|location|region|departement|postal/.test(key)) return "Paris";
+    if (/orientation/.test(key)) return "sud";
+    if (/keyword|theme|topic|sujet|subject/.test(key)) return "energie solaire domestique";
+    if (/titre|title/.test(key)) return "Simulateur solaire maison";
+    if (/nom|name|project/.test(key)) return "Projet Horizon";
+    if (/description|notes|content|message/.test(key)) return "Maison individuelle exposee sud avec toiture exploitable.";
+    return field.placeholder || "France";
+  }
+
+  function sampleNumber(field) {
+    const key = `${field.id || ""} ${field.name || ""}`.toLowerCase();
+    if (/inclinaison|angle|slope/.test(key)) return "30";
+    if (/surface|size|m2|sqm/.test(key)) return "28";
+    if (/annee|year/.test(key)) return "2024";
+    if (/prix|price|budget|cost|amount|montant/.test(key)) return "12000";
+    const min = Number(field.min || "");
+    const max = Number(field.max || "");
+    if (Number.isFinite(min) && Number.isFinite(max) && max >= min) {
+      return String(Math.min(max, Math.max(min, min + Math.round((max - min) * 0.35))));
+    }
+    if (Number.isFinite(min)) return String(Math.max(min, 12));
+    if (Number.isFinite(max)) return String(Math.min(max, 12));
+    return field.value || "12";
+  }
+
+  function applySample(field) {
+    const tag = (field.tagName || "").toLowerCase();
+    const type = (field.type || "").toLowerCase();
+    if (field.disabled) return;
+    if (type === "hidden" || type === "submit" || type === "button" || type === "reset" || type === "image" || type === "file") {
+      return;
+    }
+    const currentValue = normalize(field.value);
+    if (tag === "select") {
+      if (currentValue) return;
+      const option = Array.from(field.options || []).find((item) => item.value && !item.disabled) || field.options[0];
+      if (option) field.value = option.value;
+      return;
+    }
+    if (type === "checkbox") {
+      if (field.checked) return;
+      field.checked = true;
+      return;
+    }
+    if (type === "radio") {
+      if (field.checked) return;
+      field.checked = true;
+      return;
+    }
+    if (type === "date") {
+      if (currentValue) return;
+      field.value = "2026-03-01";
+      return;
+    }
+    if (type === "email") {
+      if (currentValue) return;
+      field.value = "bonjour@example.com";
+      return;
+    }
+    if (type === "url") {
+      if (currentValue) return;
+      field.value = "https://example.com/offre-solaire";
+      return;
+    }
+    if (type === "tel") {
+      if (currentValue) return;
+      field.value = "0612345678";
+      return;
+    }
+    if (type === "color") {
+      if (currentValue) return;
+      field.value = "#2f855a";
+      return;
+    }
+    if (type === "number" || type === "range") {
+      if (currentValue) return;
+      field.value = sampleNumber(field);
+      return;
+    }
+    if (currentValue) return;
+    field.value = sampleText(field);
+  }
+
+  function stamp(status, detail, headline, primary) {
+    if (qaFinished) return;
+    qaFinished = true;
+    if (qaWatchdog) {
+      window.clearTimeout(qaWatchdog);
+      qaWatchdog = null;
+    }
+    const node = marker();
+    node.dataset.status = status;
+    node.dataset.mode = "native-form";
+    node.dataset.detail = detail || "";
+    node.dataset.headline = headline || "";
+    node.dataset.primary = primary || "";
+    node.dataset.viewport = window.innerWidth <= 640 ? "mobile" : "desktop";
+    window.setTimeout(function () {
+      try {
+        window.stop();
+      } catch (_error) {}
+    }, 0);
+  }
+
+  function installModalGuards() {
+    const noop = function () {};
+    const approve = function () { return true; };
+    const empty = function () { return ""; };
+    try { window.alert = noop; } catch (_error) {}
+    try { window.confirm = approve; } catch (_error) {}
+    try { window.prompt = empty; } catch (_error) {}
+  }
+
+  function triggerAction(form, action) {
+    try {
+      if (typeof form.requestSubmit === "function") {
+        form.requestSubmit(action || undefined);
+        return;
+      }
+    } catch (_error) {}
+    if (action && typeof action.click === "function") {
+      action.click();
+      return;
+    }
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  }
+
+  function inspectResult(before, attemptsLeft) {
+    const result = findResult();
+    if (!result) {
+      stamp("fail", "La zone de resultat est introuvable.", "");
+      return;
+    }
+    const after = resultSignature(result);
+    const text = normalize(result.textContent);
+    if (after && after !== before && text.length >= 24) {
+      const primary = result.querySelector("a[href], button[data-href], [data-primary-url]") || document.querySelector("#tool-result a[href]");
+      stamp("pass", "Le formulaire natif a mis a jour la zone de resultat.", resultHeadline(result), primary ? (primary.getAttribute("href") || primary.getAttribute("data-primary-url") || "") : "");
+      return;
+    }
+    if (attemptsLeft > 0) {
+      window.setTimeout(function () {
+        inspectResult(before, attemptsLeft - 1);
+      }, 250);
+      return;
+    }
+    stamp("fail", "La zone de resultat n'a pas renvoye de contenu exploitable.", resultHeadline(result));
+  }
+
+  function runSmoke() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("__qa") !== "functional") return;
+    qaWatchdog = window.setTimeout(function () {
+      stamp("fail", "QA smoke timed out before the page reported a usable result.", "");
+    }, 7000);
+    const form = findForm();
+    if (!form) {
+      stamp("fail", "Le formulaire principal est introuvable.", "");
+      return;
+    }
+    const result = findResult();
+    const before = resultSignature(result);
+    installModalGuards();
+    try {
+      form.querySelectorAll("input, select, textarea").forEach(applySample);
+    } catch (error) {
+      stamp("fail", error && error.message ? `QA smoke sample failed: ${error.message}` : "QA smoke sample failed before submit.", "");
+      return;
+    }
+    const action = primaryAction(form);
+    try {
+      triggerAction(form, action);
+    } catch (error) {
+      stamp("fail", error && error.message ? `QA smoke submit failed: ${error.message}` : "QA smoke submit failed.", "");
+      return;
+    }
+    inspectResult(before, 10);
+  }
+
+  window.addEventListener("error", function (event) {
+    const message = event && event.message ? event.message : "JavaScript runtime error during QA smoke.";
+    stamp("fail", `QA smoke JS error: ${message}`, "");
+  }, { once: true });
+
+  window.addEventListener("unhandledrejection", function (event) {
+    const reason = event && event.reason;
+    const detail = typeof reason === "string"
+      ? reason
+      : reason && reason.message
+        ? reason.message
+        : "Unhandled promise rejection during QA smoke.";
+    stamp("fail", `QA smoke rejection: ${detail}`, "");
+  }, { once: true });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      window.setTimeout(runSmoke, 60);
+    }, { once: true });
+  } else {
+    window.setTimeout(runSmoke, 60);
+  }
+})();
+</script>
+</body>
+</html>
